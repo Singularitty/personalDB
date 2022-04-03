@@ -11,8 +11,8 @@ This is a personal project designed to expand my knowledge in these areas of com
 meant to be anything serious or even useful  
 
 #### Status
-- Currently not working
-- Only detects tokens
+- Help command and menu working
+- Allows to go back and change the current directory (Diretories with a name which contains spaces is not supported yet)
 
 #### To do
 - Finish OperationEngine
