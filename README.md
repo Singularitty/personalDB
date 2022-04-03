@@ -7,7 +7,7 @@ Program to help you manage files in your personal computer and in between server
 This was made because I was tired of managing files between my laptop, desktop, server and cloud  
  
 Right now it's just a simple file explorer, but I hope to add database like features, such as
-storing files in an efficient way and retrieving then using hashes and some algorithms  
+storing files and data in an efficient way and retrieving then using hashes and some algorithms  
 
 This is a personal project designed to expand my knowledge in these areas of computing and not
 meant to be anything serious or even useful  
