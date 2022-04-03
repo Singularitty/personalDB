@@ -8,6 +8,13 @@
 package personalDB;
 
 public class Interface {
+    private String author = "Luís Ferreirinha";
+    private String versionDate = "03/04/2022";
+    private FileHandlingEngine fileEngine;
+
+    public Interface(FileHandlingEngine fileEngine) {
+        this.fileEngine = fileEngine;
+    }
 
     public void drawStartScreen() {
         programInfo();
@@ -21,12 +28,12 @@ public class Interface {
     private void programInfo() {
         drawLine();
         System.out.println("\t\t\t\t\t\tpersonalDB\n");
-        System.out.println("\tMade by: Luís Ferreirinha \t\t Version Date: 02/04/2022");
+        System.out.println("\tMade by: " + this.author + " \t\t " + this.versionDate);
     }
 
     private void sessionInfo() {
         drawLine();
-        System.out.println("Current Directory: " + System.getProperty("user.dir"));
+        System.out.println("Current Directory: " + fileEngine.getCurrentDir());
     }
 
     private void inputSection() {

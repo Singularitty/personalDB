@@ -13,28 +13,32 @@
 
 package personalDB;
 
-public class Main {
+import java.util.List;
+
+public class JpersonalDB {
 
     public static void main(String[] args) {
 
         boolean exit = false;
 
-        Interface screen = new Interface();
-        Parser TokenParser = new Parser();
+
+        FileHandlingEngine fileEngine = new FileHandlingEngine(System.getProperty("user.dir"));
+        OperationHandler opHandler = new OperationHandler(fileEngine);
+        Interface screen = new Interface(fileEngine);
 
         screen.drawStartScreen();
 
         while (!exit) {
 
             screen.drawScreen();
-            Operation action = TokenParser.parser(TokenParser.getInput());
+            String userInput = Parser.getInput();
+            Operation command = Parser.getCommand(userInput);
+            List<String> arguments = Parser.getArgs(userInput);
 
-            System.out.println(action);
-
-            if (action == Operation.EXIT) {
+            if (command == Operation.EXIT) {
                 exit = true;
             } else {
-
+                opHandler.execute(command, arguments);
             }
 
 

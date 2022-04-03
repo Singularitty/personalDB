@@ -1,5 +1,7 @@
 /**
  * Parser
+ * Parses user input
+ * Can return commands and arguments
  * @author: Luís Ferreirinha
  * @email: luispedroferreirinha@gmail.com
  * @date: 02/04/2022
@@ -22,7 +24,7 @@ public class Parser {
      * Reads from stdin and returns the value read has a String
      * @return String containing the input from stdin
      */
-    public String getInput() {
+    public static String getInput() {
         Scanner s = new Scanner(System.in);
         String input = s.nextLine();
         return input;
@@ -33,7 +35,7 @@ public class Parser {
      * @param input String to be parsed
      * @return List of tokens
      */
-    public Operation parser(String input) {
+    public static Operation getCommand(String input) {
 
         List<String> Tokens = new ArrayList<String>();
 
@@ -74,6 +76,25 @@ public class Parser {
         }
 
         return action;
+    }
+
+    /**
+     * Uses whitespace to split a string into tokens, removes the first
+     * token (assumed to be the command token) and returns the rest of the tokens
+     * which are assumed to be the arguments in a List.
+     * @param input String to be parsed
+     * @return List of strings assumed to be the arguments in the input string
+     */
+    public static List<String> getArgs(String input) {
+
+        List<String> args = new ArrayList<String>();
+        String[] Tokens = input.split(" ");
+
+        for (int i = 1; i < Tokens.length; i++) {
+            args.add(Tokens[i]);
+        }
+
+        return args;
     }
 
 }
