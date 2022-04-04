@@ -8,9 +8,7 @@
 package personalDB;
 
 public class Interface {
-    private String author = "Luís Ferreirinha";
-    private String versionDate = "03/04/2022";
-    private FileHandlingEngine fileEngine;
+    private final FileHandlingEngine fileEngine;
 
     public Interface(FileHandlingEngine fileEngine) {
         this.fileEngine = fileEngine;
@@ -28,7 +26,9 @@ public class Interface {
     private void programInfo() {
         drawLine();
         System.out.println("\t\t\t\t\t\tpersonalDB\n");
-        System.out.println("\tMade by: " + this.author + " \t\t " + this.versionDate);
+        String author = "Luís Ferreirinha";
+        String versionDate = "03/04/2022";
+        System.out.println("\tMade by: " + author + " \t\t " + versionDate);
     }
 
     private void sessionInfo() {
