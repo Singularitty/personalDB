@@ -14,13 +14,13 @@ public class Help {
 
     /**
      * Displays a help screen based on the arguments give
-     * @param arguments
+     * @param arguments Input split into tokens
      */
     public static void getHelp(List<String> arguments) {
-        if (arguments.size() == 0) {
+        if (arguments.size() == 1) {
             displayCommands();
-        } else if (arguments.size() == 1) {
-            Operation queriedCommand = Parser.getCommand(arguments.get(0));
+        } else if (arguments.size() == 2) {
+            Operation queriedCommand = Parser.getCommand(arguments.get(1));
             usageInfo(queriedCommand);
         } else {
             System.out.println("Usage: HELP COMMAND");
@@ -48,34 +48,16 @@ public class Help {
      * @param command Operation for which the instructions to will be displayed
      */
     private static void usageInfo(Operation command) {
-        switch(command) {
-            case HELP:
-                System.out.println("Displays all usable commands.\nUsage: HELP");
-                break;
-            case EXIT:
-                System.out.println("Exits the program.\nUsage: EXIT");
-                break;
-            case FIND:
-                System.out.println("Finds a file.\nUsage: FIND FILENAME\nE.g: FIND JpersonalDB.java");
-                break;
-            case DELETE:
-                System.out.println("Deletes a file in the current directory.\nUsage: DELETE FILENAME");
-                break;
-            case CREATE:
-                System.out.println("Creates a file in the current directory.\nUsage: CREATE FILENAME");
-                break;
-            case GOTO:
-                System.out.println("Go to the specified directory.\nUsage: GOTO DIRECTORY\nE.g: GOTO /home/documents/personalDB");
-                break;
-            case OPEN:
-                System.out.println("Opens the specified file in the current directory with the default program.\nUsage: OPEN FILENAME");
-                break;
-            case BACK:
-                System.out.println("Goes to the previous directory.\nUsage: BACK");
-                break;
-            default:
-                System.out.println("Invalid command specified.");
-                break;
+        switch (command) {
+            case HELP -> System.out.println("Displays all usable commands.\nUsage: HELP");
+            case EXIT -> System.out.println("Exits the program.\nUsage: EXIT");
+            case FIND -> System.out.println("Finds a file.\nUsage: FIND FILENAME\nE.g: FIND JpersonalDB.java");
+            case DELETE -> System.out.println("Deletes a file in the current directory.\nUsage: DELETE FILENAME");
+            case CREATE -> System.out.println("Creates a file in the current directory.\nUsage: CREATE FILENAME");
+            case GOTO -> System.out.println("Go to the specified directory.\nUsage: GOTO DIRECTORY\nE.g: GOTO /home/documents/personalDB");
+            case OPEN -> System.out.println("Opens the specified file in the current directory with the default program.\nUsage: OPEN FILENAME");
+            case BACK -> System.out.println("Goes to the previous directory.\nUsage: BACK");
+            default -> System.out.println("Invalid command specified.");
         }
     }
 

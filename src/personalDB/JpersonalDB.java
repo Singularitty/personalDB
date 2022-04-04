@@ -32,14 +32,22 @@ public class JpersonalDB {
 
             screen.drawScreen();
             String userInput = Parser.getInput();
-            Operation command = Parser.getCommand(userInput);
-            List<String> arguments = Parser.getArgs(userInput);
 
-            if (command == Operation.EXIT) {
-                exit = true;
-            } else {
-                opHandler.execute(command, arguments);
+            try {
+
+                Operation command = Parser.getCommand(userInput);
+                if (command == Operation.EXIT) {
+                    exit = true;
+                } else {
+                    List<String> arguments = Parser.getArgs(userInput);
+                    opHandler.execute(command, arguments);
+                }
+
+            } catch (InvalidInputException e) {
+                e.printStackTrace();
             }
+
+
 
 
         }

@@ -9,6 +9,7 @@ package personalDB;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -45,7 +46,7 @@ public class FileHandlingEngine {
 
         if (oldPath.size() > 1) {
             for (int i = 0; i < oldPath.size() - 1; i++) {
-                newPath.append(oldPath.get(i) + File.separator);
+                newPath.append(oldPath.get(i)).append(File.separator);
             }
             newPath.deleteCharAt(newPath.length()-1);
             this.currentDir = newPath.toString();
@@ -63,9 +64,7 @@ public class FileHandlingEngine {
     public void goToDir(String newPath) {
 
         if (!isFullPath(newPath)) {
-            StringBuilder tempPath = new StringBuilder();
-            tempPath.append(this.currentDir + File.separator + newPath);
-            this.currentDir = tempPath.toString();
+            this.currentDir = this.currentDir + File.separator + newPath;
         } else {
             this.currentDir = newPath;
         }
@@ -82,14 +81,7 @@ public class FileHandlingEngine {
         List<String> newPath = pathParser(path);
         List<String> currentPath = pathParser(this.currentDir);
 
-        int smallestLength;
-        if (newPath.size() < currentPath.size()) {
-            smallestLength = newPath.size();
-        } else {
-            smallestLength = currentPath.size();
-        }
-
-        for (int i = 0; i < smallestLength; i++) {
+        for (int i = 0; i < Math.min(newPath.size(), currentPath.size()); i++) {
             if (!newPath.get(i).equals(currentPath.get(i))) {
                 return false;
             }
@@ -101,15 +93,13 @@ public class FileHandlingEngine {
      * Takes the current path and returns all the directories composing that path in a list
      * @return List containing all the directories that make up that path
      */
-    private List<String> pathParser(String path) {
+    List<String> pathParser(String path) {
 
-        List<String> pathTokens = new ArrayList<String>();
+        List<String> pathTokens = new ArrayList<>();
 
         String separator = File.separator.replace("\\","\\\\");
 
-        for (String s : path.split(separator)) {
-            pathTokens.add(s);
-        }
+        Collections.addAll(pathTokens, path.split(separator));
 
         return pathTokens;
     }

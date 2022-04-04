@@ -11,6 +11,7 @@ package personalDB;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -19,6 +20,17 @@ import java.util.Scanner;
  * operations in the program
  */
 public class Parser {
+    private final String userInput;
+    private int cursor = 0;
+
+    /**
+     * Constructor
+     * @requires userInput != null
+     * @param userInput input from the user
+     */
+    public Parser(String userInput) {
+        this.userInput = userInput;
+    }
 
     /**
      * Reads from stdin and returns the value read has a String
@@ -26,8 +38,7 @@ public class Parser {
      */
     public static String getInput() {
         Scanner s = new Scanner(System.in);
-        String input = s.nextLine();
-        return input;
+        return s.nextLine();
     }
 
     /**
@@ -37,45 +48,19 @@ public class Parser {
      */
     public static Operation getCommand(String input) {
 
-        List<String> Tokens = new ArrayList<String>();
+        List<String> Tokens = new ArrayList<>(Arrays.asList(input.split(" ")));
 
-        for (String token : input.split(" ")) {
-            Tokens.add(token);
-        }
-
-        Operation action = Operation.NONE;
-
-        switch (Tokens.get(0).toUpperCase()) {
-            case "EXIT":
-                action = Operation.EXIT;
-                break;
-            case "HELP":
-                action = Operation.HELP;
-                break;
-            case "FIND":
-                action = Operation.FIND;
-                break;
-            case "DELETE":
-                action = Operation.DELETE;
-                break;
-            case "CREATE":
-                action = Operation.CREATE;
-                break;
-            case "GOTO":
-                action = Operation.GOTO;
-                break;
-            case "OPEN":
-                action = Operation.OPEN;
-                break;
-            case "BACK":
-                action = Operation.BACK;
-                break;
-            default:
-                action = Operation.INVALID;
-                break;
-        }
-
-        return action;
+        return switch (Tokens.get(0).toUpperCase()) {
+            case "EXIT" -> Operation.EXIT;
+            case "HELP" -> Operation.HELP;
+            case "FIND" -> Operation.FIND;
+            case "DELETE" -> Operation.DELETE;
+            case "CREATE" -> Operation.CREATE;
+            case "GOTO" -> Operation.GOTO;
+            case "OPEN" -> Operation.OPEN;
+            case "BACK" -> Operation.BACK;
+            default -> Operation.INVALID;
+        };
     }
 
     /**
@@ -85,16 +70,109 @@ public class Parser {
      * @param input String to be parsed
      * @return List of strings assumed to be the arguments in the input string
      */
-    public static List<String> getArgs(String input) {
+    public static List<String> getArgs(String input) throws InvalidInputException {
 
-        List<String> args = new ArrayList<String>();
-        String[] Tokens = input.split(" ");
+        Parser inputParser = new Parser(input);
 
-        for (int i = 1; i < Tokens.length; i++) {
-            args.add(Tokens[i]);
+        List<String> args = new ArrayList<>();
+
+        StringBuilder token = new StringBuilder();
+
+        while (!inputParser.endOfLine()) {
+            if (inputParser.peekCurrentChar() != ' ') {
+                if (inputParser.peekCurrentChar() != '\"') {
+                    token.append(inputParser.getCurrentChar());
+                } else {
+                    String result = inputParser.getStringInQuotes();
+                    if (result.equals("\"")) {
+                        throw new InvalidInputException("Invalid command/path given: Quotation marks not closed!");
+                    } else args.add(result);
+                }
+            } else {
+                if (token.length() == 0) {
+                    inputParser.advanceCursor();
+                } else {
+                    args.add(token.toString());
+                    token.setLength(0);
+                    inputParser.advanceCursor();
+                }
+            }
+        }
+
+        if (token.length() > 0) {
+            args.add(token.toString());
         }
 
         return args;
+    }
+
+    /**
+     * Gets the string that was inside quotation marks
+     * @return String
+     */
+    private String getStringInQuotes() {
+        int n = 1;
+        while (!this.nextEOL(n)) {
+            if (this.peekNextN(n) == '\"') {
+                int oldCursor = this.cursor;
+                this.cursor += n+1;
+                return this.userInput.substring(oldCursor+1, this.cursor-1);
+            } else {
+                n++;
+            }
+        }
+        return "\"";
+    }
+
+    /**
+     * Checks if cursor is at the end of the string
+     * @return True if cursor is at the end of string
+     */
+    private boolean endOfLine() {
+        return this.cursor == this.userInput.length();
+    }
+
+    /**
+     * Checks if the next nth character is the end of the string
+     * @return True if so
+     */
+    private boolean nextEOL(int n) {
+        return this.cursor + n == this.userInput.length();
+    }
+
+    /**
+     * Advances cursor
+     */
+    private void advanceCursor() {
+        this.cursor++;
+    }
+
+    /**
+     * Gets the current char at the cursor position and moves the cursor
+     * @requires endOfLine == false
+     * @return Char at current cursor position
+     */
+    private char getCurrentChar() {
+        char result = this.userInput.charAt(this.cursor);
+        this.cursor++;
+        return result;
+    }
+
+    /**
+     * Peeks at the char in the current cursor pos
+     * @return char at this position
+     */
+    private char peekCurrentChar() {
+        return this.userInput.charAt(cursor);
+    }
+
+    /**
+     * Peeks at the next char in the string
+     * @requires endOfLine == false
+     * @return the next char in the string
+     */
+    private char peekNextN(int n) {
+        return userInput.charAt(cursor+n);
     }
 
 }
