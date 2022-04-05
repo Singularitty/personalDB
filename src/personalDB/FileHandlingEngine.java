@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+// TODO USE FILE CLASS TO REPRESENT FILES AND DIRECTORIES
+
 /**
  * This class should only have one object created at a time
  * It stores information about the current directory and handles
@@ -35,7 +37,6 @@ public class FileHandlingEngine {
     public String getCurrentDir () {
         return this.currentDir;
     }
-
 
     /**
      * Goes to the previous directory in the path
