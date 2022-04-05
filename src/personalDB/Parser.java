@@ -10,6 +10,8 @@
 package personalDB;
 
 
+import personalDB.exceptions.InvalidInputException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

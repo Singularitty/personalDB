@@ -8,13 +8,15 @@
 
 package personalDB;
 
+import personalDB.TerminalInterface.Help;
+
 import java.util.List;
 
 
 public class OperationHandler {
-     private final FileHandlingEngine fileEngine;
+     private final DirectoryHandler fileEngine;
 
-    public OperationHandler(FileHandlingEngine fileEngine) {
+    public OperationHandler(DirectoryHandler fileEngine) {
         this.fileEngine = fileEngine;
     }
 

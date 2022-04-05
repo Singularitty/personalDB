@@ -13,44 +13,43 @@
 
 package personalDB;
 
+import personalDB.TerminalInterface.Interface;
+import personalDB.exceptions.InvalidDirectory;
+import personalDB.exceptions.InvalidInputException;
+
 import java.util.List;
 
 public class JpersonalDB {
 
     public static void main(String[] args) {
 
-        boolean exit = false;
+        try {
+            boolean exit = false;
 
+            DirectoryHandler fileEngine = new DirectoryHandler(System.getProperty("user.dir"));
+            OperationHandler opHandler = new OperationHandler(fileEngine);
+            Interface screen = new Interface(fileEngine);
+            screen.drawStartScreen();
 
-        FileHandlingEngine fileEngine = new FileHandlingEngine(System.getProperty("user.dir"));
-        OperationHandler opHandler = new OperationHandler(fileEngine);
-        Interface screen = new Interface(fileEngine);
+            while (!exit) {
 
-        screen.drawStartScreen();
+                screen.drawScreen();
+                String userInput = Parser.getInput();
 
-        while (!exit) {
-
-            screen.drawScreen();
-            String userInput = Parser.getInput();
-
-            try {
-
-                Operation command = Parser.getCommand(userInput);
-                if (command == Operation.EXIT) {
-                    exit = true;
-                } else {
-                    List<String> arguments = Parser.getArgs(userInput);
-                    opHandler.execute(command, arguments);
+                try {
+                    Operation command = Parser.getCommand(userInput);
+                    if (command == Operation.EXIT) {
+                        exit = true;
+                    } else {
+                        List<String> arguments = Parser.getArgs(userInput);
+                        opHandler.execute(command, arguments);
+                    }
+                } catch (InvalidInputException e) {
+                    e.printStackTrace();
                 }
-
-            } catch (InvalidInputException e) {
-                e.printStackTrace();
             }
-
-
-
-
+        } catch (InvalidDirectory e) {
+            System.out.println("Could not read user directory.");
         }
-
     }
 }
