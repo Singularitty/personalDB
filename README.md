@@ -15,9 +15,12 @@ meant to be anything serious or even useful
 
 #### Status
 - Help command and menu working
-- Allows to go back and change the current directory (Diretories with a name which contains spaces is not supported yet)
+- Allows to go back and change the current directory
 
 #### To do
 - Finish OperationEngine
 - File control logic
 - Build a usable terminal interface
+
+#### Known issues
+- Changing to a different root directory is not possible at the moment
