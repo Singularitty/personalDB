@@ -15,7 +15,9 @@ meant to be anything serious or even useful
 
 #### Status
 - Help command and menu working
-- Allows to go back and change the current directory
+- Allows to navigate between directories
+- Creation and deletion of directories
+- Display contents of current directory
 
 #### To do
 - Finish OperationEngine
