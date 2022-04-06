@@ -13,6 +13,8 @@
 
 package personalDB;
 
+import personalDB.Engine.DirectoryHandler;
+import personalDB.Engine.OperationHandler;
 import personalDB.TerminalInterface.Interface;
 import personalDB.exceptions.InvalidDirectory;
 import personalDB.exceptions.InvalidInputException;
@@ -27,8 +29,8 @@ public class JpersonalDB {
             boolean exit = false;
 
             DirectoryHandler fileEngine = new DirectoryHandler(System.getProperty("user.dir"));
-            OperationHandler opHandler = new OperationHandler(fileEngine);
             Interface screen = new Interface(fileEngine);
+            OperationHandler opHandler = new OperationHandler(fileEngine, screen);
             screen.drawStartScreen();
 
             while (!exit) {

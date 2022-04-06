@@ -5,7 +5,7 @@
  * @date: 03/04/2022
  */
 
-package personalDB;
+package personalDB.Engine;
 
 import personalDB.exceptions.InvalidDirectory;
 
@@ -15,9 +15,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * This class should only have one object created at a time
- * It stores information about the current directory and handles
- * all the file operations
+ * This class stores information about the current directory and handles
+ * all directory related operations
  */
 public class DirectoryHandler {
     private File currentDir;
@@ -40,6 +39,14 @@ public class DirectoryHandler {
      */
     public String getCurrentDir () {
         return currentDir.getPath();
+    }
+
+    /**
+     * Returns all the names files and directories in the current directory
+     * @return List of files and directories in the current directory
+     */
+    public String[] listAll () {
+        return this.currentDir.list();
     }
 
     /**
@@ -73,6 +80,41 @@ public class DirectoryHandler {
         } else {
             this.assignDirectory(newPath);
         }
+    }
+
+    /**
+     * Creates a new diretory for the path given if it is not a directory already
+     * @param dirPath Path to new directory
+     * @requires dirPath != null
+     */
+    public void createDir(String dirPath) {
+        File tempDir = this.finalPath(dirPath);
+        if (!tempDir.isDirectory()) {
+            tempDir.mkdir();
+        }
+    }
+
+    /**
+     * Deletes the specified directory if it exists
+     * @param dirPath Directory to be deleted
+     */
+    public void deleteDir(String dirPath) {
+        File tempDir = this.finalPath(dirPath);
+        if (tempDir.isDirectory()) {
+            tempDir.delete();
+        }
+    }
+
+    /**
+     * Takes a path and returns a File with the fullPath
+     * @param path new path
+     * @return File with the correct final path
+     */
+    private File finalPath(String path) {
+        if (!isFullPath(path)) {
+            return new File(this.currentDir.getPath() + File.separator + path);
+        }
+        return new File(path);
     }
 
     /**
@@ -111,14 +153,11 @@ public class DirectoryHandler {
      * Takes the current path and returns all the directories composing that path in a list
      * @return List containing all the directories that make up that path
      */
-    List<String> pathParser(String path) {
+    private List<String> pathParser(String path) {
 
         List<String> pathTokens = new ArrayList<>();
         String separator = File.separator.replace("\\","\\\\");
         Collections.addAll(pathTokens, path.split(separator));
         return pathTokens;
     }
-
-
-
 }

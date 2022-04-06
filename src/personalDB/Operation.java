@@ -11,5 +11,5 @@ package personalDB;
  * All types of operations supported by the program
  */
 public enum Operation {
-    EXIT, HELP, FIND, DELETE, CREATE, GOTO, OPEN, BACK, INVALID, NONE
+    EXIT, HELP, FIND, DELETE, CREATE, GOTO, OPEN, BACK, INVALID, MKDIR, RMDIR, LS
 }

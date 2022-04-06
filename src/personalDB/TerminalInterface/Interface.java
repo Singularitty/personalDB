@@ -7,7 +7,7 @@
 
 package personalDB.TerminalInterface;
 
-import personalDB.DirectoryHandler;
+import personalDB.Engine.DirectoryHandler;
 
 public class Interface {
     private final DirectoryHandler fileEngine;
@@ -25,6 +25,14 @@ public class Interface {
         inputSection();
     }
 
+    public void displayDirectoryContent() {
+        String[] content = this.fileEngine.listAll();
+        System.out.println("Content of " + this.fileEngine.getCurrentDir() + ":");
+        for (String s : content) {
+            System.out.println(s);
+        }
+    }
+
     private void programInfo() {
         drawLine();
         System.out.println("\t\t\t\t\t\tpersonalDB\n");
@@ -32,6 +40,7 @@ public class Interface {
         String versionDate = "03/04/2022";
         System.out.println("\tMade by: " + author + " \t\t " + versionDate);
     }
+
 
     private void sessionInfo() {
         drawLine();

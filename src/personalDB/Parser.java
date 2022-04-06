@@ -61,6 +61,9 @@ public class Parser {
             case "GOTO" -> Operation.GOTO;
             case "OPEN" -> Operation.OPEN;
             case "BACK" -> Operation.BACK;
+            case "MKDIR" -> Operation.MKDIR;
+            case "RMDIR" -> Operation.RMDIR;
+            case "LS" -> Operation.LS;
             default -> Operation.INVALID;
         };
     }
