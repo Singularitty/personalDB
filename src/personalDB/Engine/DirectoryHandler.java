@@ -1,5 +1,5 @@
 /**
- * Handles all files operations
+ * Handles all directory operations
  * @author: Luís Ferreirinha
  * @email: luispedroferreirinha@gmail.com
  * @date: 03/04/2022

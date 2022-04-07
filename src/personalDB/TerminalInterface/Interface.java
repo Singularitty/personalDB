@@ -27,7 +27,7 @@ public class Interface {
 
     public void displayDirectoryContent() {
         String[] content = this.fileEngine.listAll();
-        System.out.println("Content of " + this.fileEngine.getCurrentDir() + ":");
+        System.out.println("Contents of " + this.fileEngine.getCurrentDir() + ":");
         for (String s : content) {
             System.out.println(s);
         }
