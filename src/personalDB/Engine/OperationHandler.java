@@ -8,7 +8,7 @@
 
 package personalDB.Engine;
 
-import personalDB.Operation;
+import personalDB.Parser.Operation;
 import personalDB.TerminalInterface.Help;
 import personalDB.TerminalInterface.Interface;
 
@@ -16,17 +16,19 @@ import java.util.List;
 
 
 public class OperationHandler {
-     private final DirectoryHandler fileEngine;
+     private final DirectoryHandler directoryHandler;
+     private final FileHandler fileHandler;
      private final Interface screen;
 
-    public OperationHandler(DirectoryHandler fileEngine, Interface screen) {
-        this.fileEngine = fileEngine;
+    public OperationHandler(DirectoryHandler directoryHandler, FileHandler fileHandler, Interface screen) {
+        this.directoryHandler = directoryHandler;
+        this.fileHandler = fileHandler;
         this.screen = screen;
     }
 
     /**
      * Executes commands that might take arguments:
-     * FIND, DELETE, CREATE, GOTO, OPEN, HELP, BACK
+     * FIND, DELETE, CREATE, CD, OPEN, HELP, BACK
      * @param command Operation that represents a command the user
      *               would like to perform
      * @param args Arguments for said command
@@ -38,37 +40,56 @@ public class OperationHandler {
                 Help.getHelp(args);
                 break;
             case BACK:
-                fileEngine.backDir();
+                directoryHandler.backDir();
                 break;
-            case GOTO:
+            case CD:
                 if (args.size() == 2) {
-                    fileEngine.goToDir(args.get(1));
+                    directoryHandler.goToDir(args.get(1));
                 } else {
                   System.out.println("Too many arguments.");
                 }
                 break;
             case LS:
-                screen.displayDirectoryContent();
+                try {
+                    screen.displayDirectoryContent();
+                } catch (NullPointerException e) {
+                    System.out.println("Cannot read directory contents.\nError: " + e);
+                }
                 break;
             case RMDIR:
                 if (args.size() == 2) {
-                    fileEngine.deleteDir(args.get(1));
+                    directoryHandler.deleteDir(args.get(1));
                 } else {
-                    System.out.println("Too many arguments");
+                    System.out.println("Too many arguments.");
                 }
                 break;
             case MKDIR:
                 if (args.size() == 2) {
-                    fileEngine.createDir(args.get(1));
+                    directoryHandler.createDir(args.get(1));
                 } else {
-                    System.out.println("Too many arguments");
+                    System.out.println("Too many arguments.");
                 }
                 break;
             case CREATE:
+                if (args.size() == 2) {
+                    fileHandler.createFile(args.get(1));
+                } else {
+                    System.out.println("Too many arguments.");
+                }
                 break;
             case DELETE:
+                if (args.size() == 2) {
+                    fileHandler.deleteFile(args.get(1));
+                } else {
+                    System.out.println("Too many arguments.");
+                }
                 break;
             case OPEN:
+                if (args.size() == 2) {
+                    fileHandler.openFile(args.get(1));
+                } else {
+                    System.out.println("Too many arguments.");
+                }
                 break;
             case FIND:
                 break;

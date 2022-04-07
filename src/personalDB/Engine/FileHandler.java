@@ -7,6 +7,7 @@
 
 package personalDB.Engine;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
@@ -52,4 +53,24 @@ public class FileHandler {
             System.out.println("Access denied could not delete file:" + e);
         }
     }
+
+    /**
+     * Opens the file with the given filename with its default application if said file exists
+     * @param filename name of the file
+     */
+    public void openFile(String filename) {
+        try {
+            if (Desktop.isDesktopSupported()) {
+                File tempFile = new File(directory.getCurrentDir() + File.separator + filename);
+                Desktop.getDesktop().open(tempFile);
+            } else {
+                System.out.println("This is operation is not support on the current platform.");
+            }
+        } catch (IOException e) {
+            System.out.println("the specified file has no associated application or the associated application fails to be launched:" + e);
+        } catch (IllegalArgumentException e) {
+            System.out.println("The specified file does not exist.");
+        }
+    }
+
 }

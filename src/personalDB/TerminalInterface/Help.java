@@ -8,8 +8,8 @@
 
 package personalDB.TerminalInterface;
 
-import personalDB.Operation;
-import personalDB.Parser;
+import personalDB.Parser.Operation;
+import personalDB.Parser.Parser;
 
 import java.util.List;
 
@@ -40,7 +40,7 @@ public class Help {
         System.out.println("FIND: Finds a file");
         System.out.println("DELETE: Deletes a file");
         System.out.println("CREATE: Creates a file");
-        System.out.println("GOTO: Goes to the specified directory");
+        System.out.println("CD: Goes to the specified directory");
         System.out.println("OPEN: Opens specified file");
         System.out.println("BACK: Goes to previous directory");
         System.out.println("Type \"HELP COMMAND\" for usage information.");
@@ -57,7 +57,7 @@ public class Help {
             case FIND -> System.out.println("Finds a file.\nUsage: FIND FILENAME\nE.g: FIND JpersonalDB.java");
             case DELETE -> System.out.println("Deletes a file in the current directory.\nUsage: DELETE FILENAME");
             case CREATE -> System.out.println("Creates a file in the current directory.\nUsage: CREATE FILENAME");
-            case GOTO -> System.out.println("Go to the specified directory.\nUsage: GOTO DIRECTORY\nE.g: GOTO /home/documents/personalDB");
+            case CD -> System.out.println("Go to the specified directory.\nUsage: CD DIRECTORY\nE.g: CD /home/documents/personalDB");
             case OPEN -> System.out.println("Opens the specified file in the current directory with the default program.\nUsage: OPEN FILENAME");
             case BACK -> System.out.println("Goes to the previous directory.\nUsage: BACK");
             default -> System.out.println("Invalid command specified.");

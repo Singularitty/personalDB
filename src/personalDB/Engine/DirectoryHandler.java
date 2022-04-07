@@ -7,7 +7,7 @@
 
 package personalDB.Engine;
 
-import personalDB.exceptions.InvalidDirectory;
+import personalDB.Exceptions.InvalidDirectory;
 
 import java.io.File;
 import java.util.ArrayList;

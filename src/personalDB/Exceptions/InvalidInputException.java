@@ -5,7 +5,7 @@
  * @date: 02/04/2022
  */
 
-package personalDB.exceptions;
+package personalDB.Exceptions;
 
 public class InvalidInputException extends Exception {
 

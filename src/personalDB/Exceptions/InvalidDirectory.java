@@ -6,7 +6,7 @@
  */
 
 
-package personalDB.exceptions;
+package personalDB.Exceptions;
 
 public class InvalidDirectory extends Exception {
 
