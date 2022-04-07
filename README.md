@@ -15,11 +15,10 @@ meant to be anything serious or even useful
 
 #### Status
 - Help command and menu working
-- Allows to navigate between directories
-- Creation and deletion of directories
-- Display contents of current directory
+- Basic file explorer features (Managing directories and files, also openning files with default application supported)
 
 #### To do
+- Add file searching functionality
 - Finish OperationEngine
 - File control logic
 - Build a usable terminal interface
