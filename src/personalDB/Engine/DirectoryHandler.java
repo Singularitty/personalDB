@@ -7,6 +7,7 @@
 
 package personalDB.Engine;
 
+import org.jetbrains.annotations.NotNull;
 import personalDB.Exceptions.InvalidDirectory;
 
 import java.io.File;
@@ -42,122 +43,120 @@ public class DirectoryHandler {
     }
 
     /**
-     * Returns all the names files and directories in the current directory
-     * @return List of files and directories in the current directory
+     * Goes to the parent directory of the current directory
      */
-    public String[] listAll () {
+    public void goBack() {
+        File parentDirectory = this.currentDir.getParentFile();
+        if (parentDirectory == null) {
+            System.out.println("This is the root directory.");
+        } else {
+            this.currentDir = parentDirectory;
+        }
+    }
+
+    /**
+     * Changes the current directory to the specified directory if it exists
+     * @param pathname String representing the pathname of the new directory
+     */
+    public void cdDir(@NotNull String pathname) {
+        File newDirectory;
+        if (pathname.startsWith("..")) {
+            List<String> lexemes = this.pathParser(pathname);
+            if (lexemes.size() == 1) {
+                this.goBack();
+            } else {
+                lexemes.remove(0);
+                this.goBack();
+                StringBuilder newPath = new StringBuilder();
+                for (String lexeme : lexemes) {
+                    newPath.append(lexeme).append(File.separator);
+                }
+                newPath.deleteCharAt(newPath.length()-1);
+                this.cdDir(newPath.toString());
+            }
+        } else {
+            if (this.isAbsolute(pathname)) {
+                newDirectory = new File(pathname);
+            } else {
+                String absolutePathname = this.currentDir.getAbsolutePath() + File.separator + pathname;
+                newDirectory = new File(absolutePathname);
+            }
+            if (newDirectory.isDirectory()) {
+                this.currentDir = newDirectory;
+            } else {
+                System.out.println("That directory does not exist.");
+            }
+        }
+    }
+
+    /**
+     * Deletes the directory with the specified pathname if it is empty and the program
+     * has delete access.
+     * @param pathname Path of the directory to be deleted
+     */
+    public void deleteDir(@NotNull String pathname) {
+        File tempDir = new File(pathname);
+        if (tempDir.isDirectory()) {
+            try {
+                if (!tempDir.delete()) {
+                    System.out.println("Directory is not empty.");
+                }
+            } catch (SecurityException e) {
+                System.out.println(e);
+            }
+        } else {
+            System.out.println("This is not a directory.");
+        }
+    }
+
+    /**
+     * Creates a directory with the given pathname
+     * @param pathname Path of the new directory
+     */
+    public void mkDir(@NotNull String pathname) {
+        File tempDir = new File(pathname);
+        if (tempDir.isDirectory()) {
+            System.out.println("This directory already exists.");
+        } else {
+            try {
+                if (!tempDir.mkdir()) {
+                    System.out.println("Could not create directory.");
+                }
+            } catch (SecurityException e) {
+                System.out.println(e);
+            }
+        }
+    }
+
+    /**
+     * Returns all the content of a directory in an array of strings
+     * @return String[] with all the content of that directory
+     */
+    public String[] listAll() {
         return this.currentDir.list();
     }
 
     /**
-     * Goes to the previous directory in the path
+     * Takes a pathname and splits it into the respective directories that make it up
+     * utilizing the operating systems' separator char as a regular expression.
+     * @param pathname Pathname of the directory/file
+     * @return List containing all the directories names that make that pathname
      */
-    public void backDir() {
-        List<String> oldPath = pathParser(this.currentDir.getPath());
-        StringBuilder newPath = new StringBuilder();
-
-        if (oldPath.size() > 1) {
-            for (int i = 0; i < oldPath.size() - 1; i++) {
-                newPath.append(oldPath.get(i)).append(File.separator);
-            }
-            newPath.deleteCharAt(newPath.length()-1);
-            this.assignDirectory(newPath.toString());
-        } else {
-            System.out.println("This is the root directory.");
-        }
+    private List<String> pathParser(@NotNull String pathname) {
+        List<String> result = new ArrayList<>();
+        Collections.addAll(result, pathname.split(File.separator.replace("\\","\\\\")));
+        return result;
     }
 
     /**
-     * Sets the current directory to the specified directory
-     * If the new path is a fullPath the current directory is set to that
-     * If it's not a full path the specified path is added to the current path
-     * @param newPath New path
+     * Checks if a given pathname is absolute or relative
+     * @param pathname String representing the pathname
+     * @return True if it is absolute
      */
-    public void goToDir(String newPath) {
-
-        if (!isFullPath(newPath)) {
-            this.assignDirectory(this.currentDir.getPath() + File.separator + newPath);
-        } else {
-            this.assignDirectory(newPath);
-        }
+    private boolean isAbsolute(@NotNull String pathname) {
+        if (pathname.matches("^[\\,\\\\,/].*$")) {
+            return true;
+        } else return pathname.matches("^[A-Z]:[\\,\\\\,/].*$");
     }
 
-    /**
-     * Creates a new diretory for the path given if it is not a directory already
-     * @param dirPath Path to new directory
-     * @requires dirPath != null
-     */
-    public void createDir(String dirPath) {
-        File tempDir = this.finalPath(dirPath);
-        if (!tempDir.isDirectory()) {
-            tempDir.mkdir();
-        }
-    }
-
-    /**
-     * Deletes the specified directory if it exists
-     * @param dirPath Directory to be deleted
-     */
-    public void deleteDir(String dirPath) {
-        File tempDir = this.finalPath(dirPath);
-        if (tempDir.isDirectory()) {
-            tempDir.delete();
-        }
-    }
-
-    /**
-     * Takes a path and returns a File with the fullPath
-     * @param path new path
-     * @return File with the correct final path
-     */
-    private File finalPath(String path) {
-        if (!isFullPath(path)) {
-            return new File(this.currentDir.getPath() + File.separator + path);
-        }
-        return new File(path);
-    }
-
-    /**
-     * Checks if the full path is a valid directory and sets it as new currentDir if so
-     * @param fullPath Path to the directory
-     */
-    private void assignDirectory(String fullPath) {
-        File tempDir = new File(fullPath);
-        if (!tempDir.isDirectory()) {
-            System.out.println("That directory does not exist.");
-        } else {
-            this.currentDir = tempDir;
-        }
-    }
-
-    /**
-     * Checks if the given path contains the old path
-     * That is if the specified path is a full path to the directory
-     * or if it's just a directory inside the current directory
-     * @param path Path to be checked
-     * @return True if the given path is a full path
-     */
-    private boolean isFullPath(String path) {
-        List<String> newPath = pathParser(path);
-        List<String> currentPath = pathParser(this.currentDir.getPath());
-
-        for (int i = 0; i < Math.min(newPath.size(), currentPath.size()); i++) {
-            if (!newPath.get(i).equals(currentPath.get(i))) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Takes the current path and returns all the directories composing that path in a list
-     * @return List containing all the directories that make up that path
-     */
-    private List<String> pathParser(String path) {
-
-        List<String> pathTokens = new ArrayList<>();
-        String separator = File.separator.replace("\\","\\\\");
-        Collections.addAll(pathTokens, path.split(separator));
-        return pathTokens;
-    }
 }
