@@ -26,10 +26,18 @@ public class Interface {
     }
 
     public void displayDirectoryContent() {
-        String[] content = this.fileEngine.listAll();
-        System.out.println("Contents of " + this.fileEngine.getCurrentDir() + ":");
-        for (String s : content) {
-            System.out.println(s);
+        try {
+            String[] content = this.fileEngine.listAll();
+            if (content.length == 0) {
+                System.out.println("This directory is empty.");
+            } else {
+                System.out.println("Contents of " + this.fileEngine.getCurrentDir() + ":");
+                for (String s : content) {
+                    System.out.println(s);
+                }
+            }
+        } catch (NullPointerException e) {
+            System.out.println("Cannot display directory content\n" + e);
         }
     }
 

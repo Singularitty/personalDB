@@ -51,7 +51,7 @@ public class JpersonalDB {
                         opHandler.execute(command, arguments);
                     }
                 } catch (InvalidInputException e) {
-                    e.printStackTrace();
+                    System.out.println("Invalid command/path given: Quotation marks not closed!");
                 }
             }
         } catch (InvalidDirectory e) {

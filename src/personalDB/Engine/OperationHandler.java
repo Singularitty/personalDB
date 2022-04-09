@@ -40,21 +40,17 @@ public class OperationHandler {
                 Help.getHelp(args);
                 break;
             case BACK:
-                directoryHandler.backDir();
+                directoryHandler.goBack();
                 break;
             case CD:
                 if (args.size() == 2) {
-                    directoryHandler.goToDir(args.get(1));
+                    directoryHandler.cdDir(args.get(1));
                 } else {
                   System.out.println("Too many arguments.");
                 }
                 break;
             case LS:
-                try {
-                    screen.displayDirectoryContent();
-                } catch (NullPointerException e) {
-                    System.out.println("Cannot read directory contents.\nError: " + e);
-                }
+                screen.displayDirectoryContent();
                 break;
             case RMDIR:
                 if (args.size() == 2) {
@@ -65,7 +61,7 @@ public class OperationHandler {
                 break;
             case MKDIR:
                 if (args.size() == 2) {
-                    directoryHandler.createDir(args.get(1));
+                    directoryHandler.mkDir(args.get(1));
                 } else {
                     System.out.println("Too many arguments.");
                 }
