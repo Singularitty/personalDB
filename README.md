@@ -24,4 +24,4 @@ meant to be anything serious or even useful
 - Build a usable terminal interface
 
 #### Known issues
-- Changing to a different root directory is not possible at the moment
+- Cannot cd parse pathnames that include escape character \ and quotation marks " (e.g.: \"random directory" (Only on windows)
