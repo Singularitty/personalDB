@@ -20,10 +20,10 @@ public class Help {
      * @param arguments Input split into tokens
      */
     public static void getHelp(List<String> arguments) {
-        if (arguments.size() == 1) {
+        if (arguments.size() == 0) {
             displayCommands();
-        } else if (arguments.size() == 2) {
-            Operation queriedCommand = Parser.getCommand(arguments.get(1));
+        } else if (arguments.size() == 1) {
+            Operation queriedCommand = Parser.getCommand(arguments.get(0));
             usageInfo(queriedCommand);
         } else {
             System.out.println("Usage: HELP COMMAND");

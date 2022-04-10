@@ -43,8 +43,8 @@ public class OperationHandler {
                 directoryHandler.goBack();
                 break;
             case CD:
-                if (args.size() == 2) {
-                    directoryHandler.cdDir(args.get(1));
+                if (args.size() == 1) {
+                    directoryHandler.cdDir(args.get(0));
                 } else {
                   System.out.println("Too many arguments.");
                 }
@@ -53,36 +53,36 @@ public class OperationHandler {
                 screen.displayDirectoryContent();
                 break;
             case RMDIR:
-                if (args.size() == 2) {
-                    directoryHandler.deleteDir(args.get(1));
+                if (args.size() == 1) {
+                    directoryHandler.deleteDir(args.get(0));
                 } else {
                     System.out.println("Too many arguments.");
                 }
                 break;
             case MKDIR:
-                if (args.size() == 2) {
-                    directoryHandler.mkDir(args.get(1));
+                if (args.size() == 1) {
+                    directoryHandler.mkDir(args.get(0));
                 } else {
                     System.out.println("Too many arguments.");
                 }
                 break;
             case CREATE:
-                if (args.size() == 2) {
-                    fileHandler.createFile(args.get(1));
+                if (args.size() == 1) {
+                    fileHandler.createFile(args.get(0));
                 } else {
                     System.out.println("Too many arguments.");
                 }
                 break;
             case DELETE:
-                if (args.size() == 2) {
-                    fileHandler.deleteFile(args.get(1));
+                if (args.size() == 1) {
+                    fileHandler.deleteFile(args.get(0));
                 } else {
                     System.out.println("Too many arguments.");
                 }
                 break;
             case OPEN:
-                if (args.size() == 2) {
-                    fileHandler.openFile(args.get(1));
+                if (args.size() == 1) {
+                    fileHandler.openFile(args.get(0));
                 } else {
                     System.out.println("Too many arguments.");
                 }
