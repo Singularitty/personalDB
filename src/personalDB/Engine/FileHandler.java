@@ -35,9 +35,9 @@ public class FileHandler {
             File newFile = new File(directory.getCurrentDir() + File.separator + filename);
             newFile.createNewFile();
         } catch (IOException e) {
-            System.out.println("IOError could not write file: " + e);
+            System.out.println("IOError could not write file.\n" + e);
         } catch (SecurityException e) {
-            System.out.println("Access denied could not write file:" + e);
+            System.out.println("Access denied could not write file.\n" + e);
         }
     }
 
@@ -50,7 +50,7 @@ public class FileHandler {
             File newFile = new File(directory.getCurrentDir() + File.separator + filename);
             newFile.delete();
         } catch (SecurityException e) {
-            System.out.println("Access denied could not delete file:" + e);
+            System.out.println("Access denied could not delete file.\n" + e);
         }
     }
 
@@ -67,7 +67,7 @@ public class FileHandler {
                 System.out.println("This is operation is not support on the current platform.");
             }
         } catch (IOException e) {
-            System.out.println("the specified file has no associated application or the associated application fails to be launched:" + e);
+            System.out.println("the specified file has no associated application or the associated application fails to be launched.\n" + e);
         } catch (IllegalArgumentException e) {
             System.out.println("The specified file does not exist.");
         }

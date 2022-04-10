@@ -35,6 +35,15 @@ public class DirectoryHandler {
     }
 
     /**
+     * Creates an instance of this class with a directory that might
+     * not exist
+     * @param directory File specifying a directory
+     */
+    private DirectoryHandler(File directory) {
+        this.currentDir = directory;
+    }
+
+    /**
      * Returns current directory
      * @return String representing the current directory
      */
@@ -75,7 +84,7 @@ public class DirectoryHandler {
                 this.cdDir(newPath.toString());
             }
         } else {
-            if (this.isAbsolute(pathname)) {
+            if (isAbsolute(pathname)) {
                 newDirectory = new File(pathname);
             } else {
                 String absolutePathname = this.currentDir.getAbsolutePath() + File.separator + pathname;
@@ -95,7 +104,7 @@ public class DirectoryHandler {
      * @param pathname Path of the directory to be deleted
      */
     public void deleteDir(@NotNull String pathname) {
-        File tempDir = new File(pathname);
+        File tempDir = getCorrectPathFile(pathname);
         if (tempDir.isDirectory()) {
             try {
                 if (!tempDir.delete()) {
@@ -114,7 +123,7 @@ public class DirectoryHandler {
      * @param pathname Path of the new directory
      */
     public void mkDir(@NotNull String pathname) {
-        File tempDir = new File(pathname);
+        File tempDir = getCorrectPathFile(pathname);
         if (tempDir.isDirectory()) {
             System.out.println("This directory already exists.");
         } else {
@@ -127,6 +136,42 @@ public class DirectoryHandler {
             }
         }
     }
+
+    /**
+     * Calculates the correct pathname for a given pathname
+     * and returns a File object with that pathname.
+     * @param pathname String representing that pathname
+     * @return File with the correct pathname (Never returns null the compiler is dumb
+     *         and doesn't know that the method is recursive).
+     */
+    private File getCorrectPathFile(@NotNull String pathname) {
+        DirectoryHandler tempHandler = new DirectoryHandler(this.currentDir);
+        File correctDirectory = null;
+        if (pathname.startsWith("..")) {
+            List<String> lexemes = tempHandler.pathParser(pathname);
+            if (lexemes.size() == 1) {
+                tempHandler.goBack();
+            } else {
+                lexemes.remove(0);
+                tempHandler.goBack();
+                StringBuilder newPath = new StringBuilder();
+                for (String lexeme : lexemes) {
+                    newPath.append(lexeme).append(File.separator);
+                }
+                newPath.deleteCharAt(newPath.length() - 1);
+                tempHandler.cdDir(newPath.toString());
+            }
+        } else {
+            if (isAbsolute(pathname)) {
+                correctDirectory = new File(pathname);
+            } else {
+                String absolutePathname = tempHandler.currentDir.getAbsolutePath() + File.separator + pathname;
+                correctDirectory = new File(absolutePathname);
+            }
+        }
+        return correctDirectory;
+    }
+
 
     /**
      * Returns all the content of a directory in an array of strings
@@ -153,7 +198,7 @@ public class DirectoryHandler {
      * @param pathname String representing the pathname
      * @return True if it is absolute
      */
-    private boolean isAbsolute(@NotNull String pathname) {
+    private static boolean isAbsolute(@NotNull String pathname) {
         if (pathname.matches("^[\\,\\\\,/].*$")) {
             return true;
         } else return pathname.matches("^[A-Z]:[\\,\\\\,/].*$");

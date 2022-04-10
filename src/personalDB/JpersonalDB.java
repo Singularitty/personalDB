@@ -23,6 +23,7 @@ import personalDB.Exceptions.InvalidDirectory;
 import personalDB.Exceptions.InvalidInputException;
 
 import java.util.List;
+import java.util.Scanner;
 
 public class JpersonalDB {
 
@@ -40,18 +41,15 @@ public class JpersonalDB {
             while (!exit) {
 
                 screen.drawScreen();
-                String userInput = Parser.getInput();
+                Scanner scannedString = new Scanner(System.in);
+                Parser input = new Parser(scannedString.nextLine());
+                Operation command = input.getCommand();
 
-                try {
-                    Operation command = Parser.getCommand(userInput);
-                    if (command == Operation.EXIT) {
-                        exit = true;
-                    } else {
-                        List<String> arguments = Parser.getArgs(userInput);
-                        opHandler.execute(command, arguments);
-                    }
-                } catch (InvalidInputException e) {
-                    System.out.println("Invalid command/path given: Quotation marks not closed!");
+                if (command == Operation.EXIT) {
+                    exit = true;
+                } else {
+                    List<String> arguments = input.getArguments();
+                    opHandler.execute(command, arguments);
                 }
             }
         } catch (InvalidDirectory e) {
