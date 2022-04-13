@@ -15,13 +15,10 @@ meant to be anything serious or even useful
 
 #### Status
 - Help command and menu working
-- Basic file explorer features (Managing directories and files, also openning files with default application supported)
+- Basic file explorer features
 
 #### To do
 - Add file searching functionality
 - Finish OperationEngine
 - File control logic
 - Build a usable terminal interface
-
-#### Known issues
-- Cannot cd parse pathnames that include escape character \ and quotation marks " (e.g.: \\"random directory" (Only on windows)
