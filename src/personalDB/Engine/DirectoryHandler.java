@@ -52,6 +52,14 @@ public class DirectoryHandler {
     }
 
     /**
+     * Returns current directory file
+     * @return File with current directory path
+     */
+    public File getDirectory() {
+        return this.currentDir;
+    }
+
+    /**
      * Goes to the parent directory of the current directory
      */
     public void goBack() {
